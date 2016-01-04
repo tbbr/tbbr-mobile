@@ -1,0 +1,15 @@
+{
+  "name": "tbbr",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "react-native start"
+  },
+  "dependencies": {
+    "react-native": "^0.17.0",
+    "react-native-facebook-login": "^1.0.2",
+    "superagent": "^1.6.1",
+    "superagent-bluebird-promise": "^2.1.1",
+    "superagent-jsonapify": "^1.4.1"
+  }
+}
