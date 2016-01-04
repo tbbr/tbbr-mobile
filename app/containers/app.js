@@ -96,9 +96,6 @@ class App extends React.Component {
         <FBLogin
             permissions={['email', 'user_friends']}
             onLogin={this.onLogin.bind(this)}
-            onLogout={function(e){console.log(e)}}
-            onCancel={function(e){console.log(e)}}
-            onPermissionsMissing={function(e){console.log(e)}}
         />
       )
     }
