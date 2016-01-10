@@ -4,18 +4,30 @@
 import React from 'react-native'
 import { connect } from 'react-redux/native'
 import { fetchFriendships } from '../../modules/friendships/actions'
+import styles from './list-styles'
+
+// Components
+import FriendshipCard from './card'
 
 let {
-  Image,
-  StyleSheet,
-  Text,
-  View,
   ListView
 } = React
 
 class FriendshipsList extends React.Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2
+      })
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(nextProps.friendships)
+    })
   }
 
   componentDidMount() {
@@ -23,10 +35,19 @@ class FriendshipsList extends React.Component {
     dispatch(fetchFriendships(accessToken))
   }
 
-  render() {
-    debugger
+  renderFriendshipRow(friendship) {
     return (
-      <Text>Rendered something...</Text>
+      <FriendshipCard friendship={friendship}/>
+    )
+  }
+
+  render() {
+    return (
+      <ListView
+        dataSource={this.state.dataSource}
+        renderRow={this.renderFriendshipRow}
+        style={styles.friendshipList}
+      />
     )
   }
 }
@@ -34,7 +55,6 @@ class FriendshipsList extends React.Component {
 function mapStateToProps(state) {
   const { entities, auth } = state
 
-  debugger
   // TODO: Remove accessToken from here and access it inside actions
   return {
     accessToken: auth.accessToken,
