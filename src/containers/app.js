@@ -8,7 +8,10 @@ import superagentJsonapify from 'superagent-jsonapify'
 import { connect } from 'react-redux/native'
 
 import constants from '../styles/constants'
+
+// Components
 import Login from '../components/auth/login'
+import FriendshipsList from '../components/friendships/list'
 
 const { colors } = constants
 
@@ -71,7 +74,9 @@ class App extends React.Component {
     let rendered
 
     if (isLoggedIn) {
-      rendered = this.renderFriendshipList()
+      rendered = (
+        <FriendshipsList />
+      )
     } else {
        rendered = (
         <Login dispatch={this.props.dispatch} />

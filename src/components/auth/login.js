@@ -19,8 +19,8 @@ class Login extends React.Component {
   render() {
     return (
       <FBLogin
-          permissions={['email', 'user_friends']}
-          onLogin={this.onLogin.bind(this)}
+        permissions={['email', 'user_friends']}
+        onLogin={this.onLogin.bind(this)}
       />
     )
   }

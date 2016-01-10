@@ -2,9 +2,16 @@
 
 // Dependencies
 import React from 'react-native'
-import FBLogin from 'react-native-facebook-login'
-import request from 'superagent-bluebird-promise'
-import { login } from '../../modules/auth/actions'
+import { connect } from 'react-redux/native'
+import { fetchFriendships } from '../../modules/friendships/actions'
+
+let {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  ListView
+} = React
 
 class FriendshipsList extends React.Component {
   constructor(props) {
@@ -12,21 +19,25 @@ class FriendshipsList extends React.Component {
   }
 
   componentDidMount() {
-    debugger
-    const { dispatch, currentUserId } = this.props
-    dispatch(fetchFriendships(currentUserId))
+    const { dispatch, accessToken } = this.props
+    dispatch(fetchFriendships(accessToken))
   }
 
   render() {
     debugger
+    return (
+      <Text>Rendered something...</Text>
+    )
   }
 }
 
 function mapStateToProps(state) {
-  const { auth, entities } = state
+  const { entities, auth } = state
 
+  debugger
+  // TODO: Remove accessToken from here and access it inside actions
   return {
-    currentUserId: auth.currentUserId,
+    accessToken: auth.accessToken,
     friendships: entities.friendships
   }
 }
