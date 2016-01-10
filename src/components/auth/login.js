@@ -6,6 +6,11 @@ import FBLogin from 'react-native-facebook-login'
 import request from 'superagent-bluebird-promise'
 import { login } from '../../modules/auth/actions'
 
+let {
+  StyleSheet,
+  View
+} = React
+
 class Login extends React.Component {
   constructor(props) {
     super(props)
@@ -18,12 +23,24 @@ class Login extends React.Component {
 
   render() {
     return (
-      <FBLogin
-        permissions={['email', 'user_friends']}
-        onLogin={this.onLogin.bind(this)}
-      />
+      <View style={styles.loginContainer}>
+        <FBLogin
+          permissions={['email', 'user_friends']}
+          onLogin={this.onLogin.bind(this)}
+        />
+      </View>
     )
   }
 }
+
+let styles = StyleSheet.create({
+  loginContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'stretch',
+    paddingLeft: 10,
+    paddingRight: 10
+  }
+})
 
 export default Login

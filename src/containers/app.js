@@ -12,22 +12,27 @@ import constants from '../styles/constants'
 // Components
 import Login from '../components/auth/login'
 import FriendshipsList from '../components/friendships/list'
+import ToolbarAndroid from 'ToolbarAndroid'
 
 const { colors } = constants
 
 superagentJsonapify(request)
 
 let {
-  Image,
   StyleSheet,
-  Text,
-  View,
-  ListView
+  View
 } = React
 
 class App extends React.Component {
   constructor(props) {
     super(props)
+  }
+
+  onActionSelected(position) {
+    debugger
+    if (position === 0) { // index of 'Settings'
+      showSettings();
+    }
   }
 
   render() {
@@ -46,9 +51,11 @@ class App extends React.Component {
 
     return (
       <View style={styles.container}>
-        <View style={styles.logoView}>
-          <Text style={styles.logoText}>tbbr</Text>
-        </View>
+        <ToolbarAndroid
+          title="tbbr"
+          titleColor={colors.primaryBase}
+          style={styles.toolbar}
+        />
         {rendered}
       </View>
     )
@@ -59,6 +66,11 @@ let styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.secondaryDark,
+  },
+  toolbar: {
+    backgroundColor: colors.secondaryLight,
+    height: 50,
+    paddingBottom: 10
   },
   logoView: {
     paddingTop: 20,
