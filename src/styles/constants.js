@@ -1,3 +1,5 @@
+'use strict'
+
 export default {
   colors: {
     primaryBase: '#98D31C',
