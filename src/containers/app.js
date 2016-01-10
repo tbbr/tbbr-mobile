@@ -1,10 +1,14 @@
 'use strict'
+
+// Dependencies
 import React from 'react-native'
 import FBLogin from 'react-native-facebook-login'
 import request from 'superagent-bluebird-promise'
 import superagentJsonapify from 'superagent-jsonapify'
+import { connect } from 'react-redux/native'
 
 import constants from '../styles/constants'
+import Login from '../components/auth/login'
 
 const { colors } = constants
 
@@ -25,34 +29,9 @@ class App extends React.Component {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
       }),
-      dataLoaded: false,
       accessToken: null,
       currentUserId: null
     }
-  }
-
-  onLogin(e) {
-    request.post('http://tbbr.me/api/tokens/oauth/grant')
-    .set('Content-Type', 'application/x-www-form-urlencoded')
-    .send({
-      grant_type: "facebook_access_token",
-      access_token: e.token
-    })
-    .then(response => {
-      this.setState({
-        currentUserId: response.body.userId,
-        accessToken: response.body.accessToken
-      })
-      return request.get('http://tbbr.me/api/friendships')
-              .set('Authorization', `Bearer ${this.state.accessToken}`)
-    })
-    .then(response => {
-      console.log(this.state.dataSource.cloneWithRows(response.body.data))
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(response.body.data),
-        dataLoaded: true
-      })
-    })
   }
 
   renderFriendshipList() {
@@ -88,17 +67,17 @@ class App extends React.Component {
   }
 
   render() {
+    const { isLoggedIn } = this.props
     let rendered
-    if (this.state.dataLoaded) {
+
+    if (isLoggedIn) {
       rendered = this.renderFriendshipList()
     } else {
-      rendered = (
-        <FBLogin
-            permissions={['email', 'user_friends']}
-            onLogin={this.onLogin.bind(this)}
-        />
+       rendered = (
+        <Login dispatch={this.props.dispatch} />
       )
     }
+
     return (
       <View style={styles.container}>
         <View style={styles.logoView}>
@@ -167,4 +146,13 @@ let styles = StyleSheet.create({
   }
 })
 
-export default App
+function mapStateToProps(state) {
+  const { auth } = state
+
+  return {
+    auth,
+    isLoggedIn: auth.currentUserId !== null
+  }
+}
+
+export default connect(mapStateToProps)(App)
